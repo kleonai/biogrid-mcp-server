@@ -1,5 +1,6 @@
 <img src="logo/combined-logo.png" width="1000" />
-# Biogrid-mcp-server
+
+# BioGRID MCP server
 
 This is a Model-Context-Protocol (MCP) endpoint server that unlocks BioGRID’s 2 × 10⁷ curated genetic and physical interactions for any LLM or autonomous agent to access the BioGRID API. This repository provides tools for your agent stack to go from raw gene symbols to publication-backed interaction networks, TSV edge lists, and ready-to-analyse statistics—all through schema-validated JSON calls. These tools self-describe inputs/outputs, so agents can discover, validate and correct calls on their own.
 
