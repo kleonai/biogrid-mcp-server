@@ -2,7 +2,7 @@
 /*
  * BioGRID MCP Server – v1.0.0
  * -----------------------------------------------------------
- * A minimal Model‑Context‑Protocol server exposing BioGRID’s
+ * A minimal Model‑Context‑Protocol server exposing BioGRID's
  * public REST API (https://wiki.thebiogrid.org/en/Help:Webservice)
  * as structured JSON‑schema tools that any MCP‑capable agent can
  * discover and invoke.
@@ -15,11 +15,11 @@
  *
  * TOOLS EXPOSED
  * ─────────────
- *   1. get_gene_interactions      – all interactions for a gene (physical + genetic)
- *   2. get_physical_interactions  – physical only
- *   3. get_genetic_interactions   – genetic only
- *   4. search_genes               – search by symbol / synonym
- *   5. export_edge_list           – edge list download for a set of BioGRID IDs
+ *   1. get_gene_interactions      – all interactions for a gene (physical + genetic)
+ *   2. get_physical_interactions  – physical only
+ *   3. get_genetic_interactions   – genetic only
+ *   4. search_genes               – search by symbol / synonym
+ *   5. export_edge_list           – edge list download for a set of BioGRID IDs
  */
 
 import {
@@ -36,6 +36,7 @@ import {
   } from '@modelcontextprotocol/sdk/types.js';
   import axios, { AxiosInstance } from 'axios';
   import dotenv from 'dotenv';
+  import { ProcessEnv } from 'node:process';
   
   dotenv.config();
   
@@ -70,9 +71,9 @@ import {
   //──────────────────────────────────────────────────────────────────────────────
   //  ARG VALIDATION  ────────────────────────────────────────────────────────────
   //
-  const isStringArray = (val: any): val is string[] => Array.isArray(val) && val.every((x) => typeof x === 'string');
+  const isStringArray = (val: unknown): val is string[] => Array.isArray(val) && val.every((x) => typeof x === 'string');
   
-  const assertEnv = (key: string) => {
+  const assertEnv = (key: string): void => {
     if (!process.env[key]) {
       console.error(`[BioGRID MCP] Missing ${key} environment variable.`);
       process.exit(1);
@@ -106,7 +107,7 @@ import {
       this.setupToolHandlers();
       this.setupResourceHandlers();
   
-      this.server.onerror = (err) => console.error('[MCP Error]', err);
+      this.server.onerror = (err: Error) => console.error('[MCP Error]', err);
       process.on('SIGINT', async () => {
         await this.server.close();
         process.exit(0);
@@ -263,7 +264,7 @@ import {
   
       try {
         const { data } = await this.api.get<BioGridInteraction[]>('/interactions/', { params });
-        const filtered = data.filter((d) => type === 'all' || d.EXPERIMENTAL_SYSTEM_TYPE.toLowerCase() === type);
+        const filtered = data.filter((d: BioGridInteraction) => type === 'all' || d.EXPERIMENTAL_SYSTEM_TYPE.toLowerCase() === type);
         return {
           content: [
             {
@@ -273,7 +274,7 @@ import {
                   query_gene: gene,
                   interaction_type: type,
                   count: filtered.length,
-                  edges: filtered.map((d) => ({
+                  edges: filtered.map((d: BioGridInteraction) => ({
                     a: d.OFFICIAL_SYMBOL_A,
                     b: d.OFFICIAL_SYMBOL_B,
                     biogrid_interaction_id: d.BIOGRID_INTERACTION_ID,
@@ -312,7 +313,7 @@ import {
               text: JSON.stringify({
                 query,
                 count: data.length,
-                genes: data.map((g) => ({
+                genes: data.map((g: GeneResult) => ({
                   biogrid_id: g.BIOGRID_ID,
                   symbol: g.OFFICIAL_SYMBOL,
                   synonyms: g.SYNONYMS.split('|'),
@@ -342,7 +343,7 @@ import {
   
       try {
         const { data } = await this.api.get<BioGridInteraction[]>('/interactions/', { params });
-        const edgeList = data.map((d) => [d.OFFICIAL_SYMBOL_A, d.OFFICIAL_SYMBOL_B]);
+        const edgeList = data.map((d: BioGridInteraction) => [d.OFFICIAL_SYMBOL_A, d.OFFICIAL_SYMBOL_B]);
         return {
           content: [
             {

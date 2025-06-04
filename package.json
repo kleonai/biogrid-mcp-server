@@ -1,0 +1,22 @@
+{
+  "name": "biogrid-mcp-server",
+  "version": "1.0.0",
+  "description": "BioGRID MCP Server exposing BioGRID's public REST API",
+  "main": "build/biogrid-server.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/biogrid-server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.1.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/axios": "^0.14.0",
+    "@types/dotenv": "^8.2.0",
+    "typescript": "^5.0.0"
+  }
+}
