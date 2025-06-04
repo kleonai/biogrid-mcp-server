@@ -51,6 +51,25 @@ This is a Model-Context-Protocol (MCP) endpoint server that unlocks BioGRID’s 
 git clone https://github.com/<you>/biogrid-mcp-server.git
 cd biogrid-mcp-server
 
+### 3. Install dependencies
+```bash
+> npm install
+```
+### 4. Configure your BioGRID API key
+Add it to your shell or a '.env' file:
+```bash
+>export BIOGRID_API_KEY=YOUR_KEY_HERE 
+```
+### 5. Build the server
+```bash
+> npm run build  
+```
+### 6. Run 
+```bash
+> npm start
+```
+Ideal for local LLMs or Claude Desktop—MCP data flows over stdin/stdout. 
+
 -------------------------------------------------------------
 Ideal workflows
 1. Variant triage:
