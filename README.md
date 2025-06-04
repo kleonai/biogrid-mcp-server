@@ -53,20 +53,20 @@ cd biogrid-mcp-server
 
 ### 3. Install dependencies
 ```bash
-> npm install
+ npm install
 ```
 ### 4. Configure your BioGRID API key
 Add it to your shell or a '.env' file:
 ```bash
->export BIOGRID_API_KEY=YOUR_KEY_HERE 
+export BIOGRID_API_KEY=YOUR_KEY_HERE 
 ```
 ### 5. Build the server
 ```bash
-> npm run build  
+npm run build  
 ```
 ### 6. Run 
 ```bash
-> npm start
+ npm start
 ```
 Ideal for local LLMs or Claude Desktop—MCP data flows over stdin/stdout. 
 
@@ -81,24 +81,23 @@ get_neighbors (seed genes) → export_edge_list → feed into GRAPH-MCP for clus
 3. Cross-DB enrichment:
 search_genes → STRING-MCP get_functional_enrichment → Reactome-MCP pathway overlay.
 -------------------
+# Quick Install
 
-
-1. Quick Install
+### 1. Start
    git clone https://github.com/<you>/biogrid-mcp-server.git
    cd biogrid-mcp-server
    npm install
 
-2. Set your BioGRID API key (free for academic use):
+### 2. Set your BioGRID API key (free for academic use):
    export BIOGRID_API_KEY=YOUR_KEY_HERE
 
-3. Run
+### 3. Run
    npm run start
    npm run start:http -- --port 3335
    [BIOGRID-MCP] server ready – manifest at /.well-known/mcp/manifest.json
 
-4. Tool Synopsis
-
-5. // Claude / OpenAI tool call
+### 5. Example case
+   // Claude / OpenAI tool call
    {
    \"name\": \"get_neighbors\",
    \"arguments\": {
@@ -119,13 +118,9 @@ search_genes → STRING-MCP get_functional_enrichment → Reactome-MCP pathway o
    \"meta\": {\"total\": 187, \"timestamp\": \"2025-06-03T22:17:11Z\", \"biogrid_version\": \"4.4.229\"}
    }
 
-6. Development guide
-   src/api.ts – thin axios wrapper around BioGRID /interactions/ and /gene/ endpoints
-
-src/parsers.ts – converts TSV ➞ typed objects
-
-src/tools.ts – declare tool schemas and handlers
-
-src/server.ts – wire up MCP transport (stdio + express)
-
-Add new analytics (e.g., centrality, clustering) in src/analytics.ts
+### 6. Development guide
+- src/api.ts – thin axios wrapper around BioGRID /interactions/ and /gene/ endpoints
+- src/parsers.ts – converts TSV ➞ typed objects
+- src/tools.ts – declare tool schemas and handlers
+- src/server.ts – wire up MCP transport (stdio + express)
+- Add new analytics (e.g., centrality, clustering) in src/analytics.ts
