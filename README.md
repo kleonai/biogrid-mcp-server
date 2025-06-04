@@ -20,7 +20,6 @@ This is a Model-Context-Protocol (MCP) endpoint server that unlocks BioGRID’s 
 5. biogrid://dataset/{dataset_id}: Bulk download of a specific BioGRID dataset release (tar/zip).
 -------------------------------------------------------------
 # Example Use-Cases 
-- Show me the interaction evidence connecting TP53 and MDM2, then link the PubMed abstracts.
 
 | Tool name            | Purpose                                                                                               | Core arguments (defaults)                                                                                           | Typical output                                                                                   | Example use case                                                                                                                                    |
 |----------------------|-------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
