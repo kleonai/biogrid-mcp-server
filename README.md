@@ -29,6 +29,68 @@ This is a Model-Context-Protocol (MCP) endpoint server that unlocks BioGRID’s 
 | **search_genes**     | Fuzzy search BioGRID’s gene table to look up ambiguous symbols or aliases.                            | `query` **(required)**, `species`                                                                                    | Ranked list with official symbol, systematic name, BioGRID ID and organism.                      | *Resolve an alias: “I’m not sure if **p85** maps to **PIK3R1** or **PIK3R2**—search and let me pick the correct high-confidence entry.”*            |
 | **interaction_stats**| Quick network summary for a gene list (node/edge counts, degree distribution, physical:genetic ratio) | `gene_symbols[]` **(required)**, `species`, `type`                                                                   | JSON with node-count, edge-count, mean degree, histogram buckets.                               | *“Before I export, give me a sanity check: How dense is the interaction network among my 50 Alzheimer’s hits?”*                                     |
 
+
+------------------------------------------------------------
+# Quick Install
+
+### 1. Clone & Install
+```bash
+git clone https://github.com/<you>/biogrid-mcp-server.git
+cd biogrid-mcp-server
+npm install
+```
+### 2. Set your BioGRID API key
+https://webservice.thebiogrid.org/
+This is free for academic usages. 
+```bash
+   export BIOGRID_API_KEY=YOUR_KEY_HERE
+```
+### 3. Run the sever
+stdio mode is the best for local LLMs 
+```bash
+npm run start
+```
+HTTP mode – expose on a port for remote agents (choose any free port):
+```bash
+npm run start:http -- --port 3335
+```
+You should see something like:
+```bash
+[BIOGRID-MCP] server ready – manifest at /.well-known/mcp/manifest.json
+```
+### 5. Tool call example
+```bash
+{
+  "name": "get_neighbors",
+  "arguments": {
+    "gene_symbol": "TP53",
+    "species": 9606,
+    "type": "genetic",
+    "limit": 250
+  }
+}
+```
+9606 here stands for the species 'human'. 
+Sample that you'll get
+```bash
+{
+  "query": {"gene":"TP53","species":9606,"type":"genetic"},
+  "neighbors": [
+    {
+      "partner": "MDM2",
+      "biogridId": "111",
+      "experimentalSystem": "Dosage Rescue",
+      "pubmedIds": [12345]
+    }
+    /* … */
+  ],
+  "meta": {
+    "total": 187,
+    "timestamp": "YYYY-MM-DDTHH:MM:SSZ",
+    "biogrid_version": "4.4.229"
+  }
+}
+```
 ------------------------------------------------------------
 ## Download & Setup
 
@@ -86,45 +148,8 @@ get_neighbors (seed genes) → export_edge_list → feed into GRAPH-MCP for clus
 
 3. Cross-DB enrichment:
 search_genes → STRING-MCP get_functional_enrichment → Reactome-MCP pathway overlay.
--------------------
-# Quick Install
-
-### 1. Start
-   git clone https://github.com/<you>/biogrid-mcp-server.git
-   cd biogrid-mcp-server
-   npm install
-
-### 2. Set your BioGRID API key (free for academic use):
-   export BIOGRID_API_KEY=YOUR_KEY_HERE
-
-### 3. Run
-   npm run start
-   npm run start:http -- --port 3335
-   [BIOGRID-MCP] server ready – manifest at /.well-known/mcp/manifest.json
-
-### 5. Example case
-   // Claude / OpenAI tool call
-   {
-   \"name\": \"get_neighbors\",
-   \"arguments\": {
-   \"gene_symbol\": \"TP53\",
-   \"species\": 9606,
-   \"type\": \"genetic\",
-   \"limit\": 250
-   }
-   }
-
-   Output:
-   {
-   \"query\": {\"gene\":\"TP53\",\"species\":9606,\"type\":\"genetic\"},
-   \"neighbors\": [
-   {\"partner\":\"MDM2\",\"biogridId\":\"111\",\"experimentalSystem\":\"Dosage Rescue\",\"pubmedIds\":[12345]},
-   ...
-   ],
-   \"meta\": {\"total\": 187, \"timestamp\": \"2025-06-03T22:17:11Z\", \"biogrid_version\": \"4.4.229\"}
-   }
-
-### 6. Development guide
+-------------------------------------------------------------------------------------------
+## Development guide
 - src/api.ts – thin axios wrapper around BioGRID /interactions/ and /gene/ endpoints
 - src/parsers.ts – converts TSV ➞ typed objects
 - src/tools.ts – declare tool schemas and handlers
