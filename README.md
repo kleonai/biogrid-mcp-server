@@ -21,8 +21,35 @@ This is a Model-Context-Protocol (MCP) endpoint server that unlocks BioGRID’s 
 -------------------------------------------------------------
 # Example Use-Cases 
 - Show me the interaction evidence connecting TP53 and MDM2, then link the PubMed abstracts.
-- 
 
+
+------------------------------------------------------------
+## Download & Setup
+
+> **TL;DR**  
+> ```bash
+> git clone https://github.com/<you>/biogrid-mcp-server.git  
+> cd biogrid-mcp-server  
+> npm install                 # install dependencies  
+> export BIOGRID_API_KEY=XXXX # set your key (see below)  
+> npm run build               # compile TypeScript → JS  
+> npm start                   # run on stdio  
+> ```
+> The manifest is now available at `/.well-known/mcp/manifest.json`.
+
+---
+
+### 1. Prerequisites
+| Requirement | Version | Notes |
+|-------------|---------|-------|
+| **Node.js** | ≥ 18 LTS | TypeScript + ESM support |
+| **npm**     | ≥ 9     | ships with Node installations |
+| **BioGRID API key** | *free* for academics | [Request here](https://wiki.thebiogrid.org/en/Help:Webservice) |
+
+### 2. Clone the repository
+``bash
+git clone https://github.com/<you>/biogrid-mcp-server.git
+cd biogrid-mcp-server
 
 -------------------------------------------------------------
 Ideal workflows
@@ -34,7 +61,7 @@ get_neighbors (seed genes) → export_edge_list → feed into GRAPH-MCP for clus
 
 3. Cross-DB enrichment:
 search_genes → STRING-MCP get_functional_enrichment → Reactome-MCP pathway overlay.
-
+-------------------
 
 
 1. Quick Install
