@@ -1,3 +1,4 @@
+<img src="logo/combined-logo.png" width="300" />
 # biogrid-mcp-server
 
 1. Quick Install
