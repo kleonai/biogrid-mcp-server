@@ -92,54 +92,7 @@ Sample that you'll get
 }
 ```
 ------------------------------------------------------------
-## Download & Setup
-
-> **TL;DR**  
-> ```bash
-> git clone https://github.com/<you>/biogrid-mcp-server.git  
-> cd biogrid-mcp-server  
-> npm install                 # install dependencies  
-> export BIOGRID_API_KEY=XXXX # set your key (see below)  
-> npm run build               # compile TypeScript → JS  
-> npm start                   # run on stdio  
-> ```
-> The manifest is now available at `/.well-known/mcp/manifest.json`.
-
----
-
-### 1. Prerequisites
-| Requirement | Version | Notes |
-|-------------|---------|-------|
-| **Node.js** | ≥ 18 LTS | TypeScript + ESM support |
-| **npm**     | ≥ 9     | ships with Node installations |
-| **BioGRID API key** | *free* for academics | [Request here](https://wiki.thebiogrid.org/en/Help:Webservice) |
-
-### 2. Clone the repository
-``bash
-git clone https://github.com/<you>/biogrid-mcp-server.git
-cd biogrid-mcp-server
-
-### 3. Install dependencies
-```bash
- npm install
-```
-### 4. Configure your BioGRID API key
-Add it to your shell or a '.env' file:
-```bash
-export BIOGRID_API_KEY=YOUR_KEY_HERE 
-```
-### 5. Build the server
-```bash
-npm run build  
-```
-### 6. Run 
-```bash
- npm start
-```
-Ideal for local LLMs or Claude Desktop—MCP data flows over stdin/stdout. 
-
--------------------------------------------------------------
-Ideal workflows
+# Workflow examples across several MCP servers
 1. Variant triage:
 search_genes → get_interactions → filter by genetic evidence → rank partners by PubMed support.
 
@@ -148,10 +101,19 @@ get_neighbors (seed genes) → export_edge_list → feed into GRAPH-MCP for clus
 
 3. Cross-DB enrichment:
 search_genes → STRING-MCP get_functional_enrichment → Reactome-MCP pathway overlay.
+
+Coming soon: http://github.com/kleonai/bio-mcp-servers  for a list of Biology MCP servers and usage guides. 
 -------------------------------------------------------------------------------------------
-## Development guide
+# Development guide
 - src/api.ts – thin axios wrapper around BioGRID /interactions/ and /gene/ endpoints
 - src/parsers.ts – converts TSV ➞ typed objects
 - src/tools.ts – declare tool schemas and handlers
 - src/server.ts – wire up MCP transport (stdio + express)
 - Add new analytics (e.g., centrality, clustering) in src/analytics.ts
+
+## Prerequisites
+| Requirement | Version | Notes |
+|-------------|---------|-------|
+| **Node.js** | ≥ 18 LTS | TypeScript + ESM support |
+| **npm**     | ≥ 9     | ships with Node installations |
+| **BioGRID API key** | *free* for academics | [Request here](https://webservice.thebiogrid.org/) |
