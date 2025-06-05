@@ -144,3 +144,6 @@ Sample that you'll get
 | **Node.js**         | ≥ 18 LTS             | TypeScript + ESM support                           |
 | **npm**             | ≥ 9                  | ships with Node installations                      |
 | **BioGRID API key** | _free_ for academics | [Request here](https://webservice.thebiogrid.org/) |
+
+--------------------------------------------------------------------------------------------
+The server has been developed by https://kleonlab.com/ 
